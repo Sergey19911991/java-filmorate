@@ -18,7 +18,7 @@ public class UserController {
     private List<User> users = new ArrayList<>();
     private static final Logger log = LoggerFactory.getLogger(UserController.class);
 
-    @PostMapping(value = "/user")
+    @PostMapping(value = "/users")
     public User create(@RequestBody User user) {
 
         try {

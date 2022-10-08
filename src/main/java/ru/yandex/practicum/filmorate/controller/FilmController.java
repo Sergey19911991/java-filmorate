@@ -18,7 +18,7 @@ public class FilmController {
     private List<Film> films = new ArrayList<>();
     private static final Logger log = LoggerFactory.getLogger(FilmController.class);
 
-    @PostMapping(value = "/film")
+    @PostMapping(value = "/films")
     public Film create(@RequestBody Film film) {
         LocalDate filmYear = LocalDate.of(1895, 12, 28);
         try {
