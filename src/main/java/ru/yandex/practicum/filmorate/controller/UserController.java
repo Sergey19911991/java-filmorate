@@ -2,10 +2,7 @@ package ru.yandex.practicum.filmorate.controller;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,11 +14,12 @@ import ru.yandex.practicum.filmorate.model.User;
 public class UserController {
     private List<User> users = new ArrayList<>();
     private static final Logger log = LoggerFactory.getLogger(UserController.class);
+    private int n = 1;
 
     @PostMapping(value = "/users")
     public User create(@RequestBody User user) {
-
         try {
+            user.setId(n);
             if (user.getLogin().isEmpty()) {
                 log.error("Ошибка в логине пользователя {}", user);
                 throw new ValidationException("Логин не может быть пустым!");
@@ -42,33 +40,44 @@ public class UserController {
                 log.error("Ошибка в дате рождения пользователя {}", user);
                 throw new ValidationException("День рождения не может быть в будущем!");
             }
-            if (user.getName().isEmpty()) {
+            if (user.getName() == null) {
                 user.setName(user.getLogin());
             }
-            int k = 0;
-            if (!users.isEmpty()) {
-                for (int i = 0; i < users.size(); i++) {
-                    if (user.getId() == users.get(i).getId()) {
-                        users.remove(i);
-                        users.add(user);
-                        log.info("Добавлен пользователь {}", user);
-                        k++;
-                        break;
-                    }
-                }
-                if (k == 0) {
-                    users.add(user);
-                    log.info("Добавлен пользователь {}", user);
-                }
-            } else {
-                users.add(user);
-                log.info("Добавлен пользователь {}", user);
-            }
+            n = n + 1;
+            users.add(user);
+            log.info("Добавлен пользователь {}", user);
         } catch (ValidationException e) {
-            e.printStackTrace();
+            throw new ValidationException(e);
         }
         return user;
     }
+
+
+    @PutMapping("/users")
+    public User updateUser(@RequestBody User user) {
+        try {
+            int k = 0;
+            for (int i = 0; i < users.size(); i++) {
+                if (user.getId() == users.get(i).getId()) {
+                    int userId = user.getId();
+                    users.remove(i);
+                    create(user);
+                    users.get(i).setId(userId);
+                    log.info("Добавлен пользователь {}", user);
+                    k++;
+                    break;
+                }
+            }
+            if (k == 0) {
+                log.error("Пользователь {} не существует", user);
+                throw new ValidationException("Такого пользователя не существует");
+            }
+        } catch (ValidationException e) {
+            throw new ValidationException(e);
+        }
+        return user;
+    }
+
 
     @GetMapping("/users")
     public List<User> findAll() {
