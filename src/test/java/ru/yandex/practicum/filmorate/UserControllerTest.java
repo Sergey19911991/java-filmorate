@@ -6,6 +6,7 @@ import ru.yandex.practicum.filmorate.controller.ValidationException;
 import ru.yandex.practicum.filmorate.model.User;
 
 import java.time.LocalDate;
+import java.util.Arrays;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -24,18 +25,7 @@ public class UserControllerTest {
         user.setLogin("Login");
         user.setEmail("email@mail.ru");
         userController.create(user);
-        assertEquals(user, userController.findAll().get(0));
-    }
-
-
-    @Test
-    public void errorName() {
-        User user = new User();
-        user.setBirthday(LocalDate.of(1990, 12, 3));
-        user.setLogin("Login");
-        user.setEmail("email@mail.ru");
-        userController.create(user);
-        assertEquals(user.getLogin(), userController.findAll().get(0).getName());
+        assertEquals(true, userController.findAll().contains(user));
     }
 
 

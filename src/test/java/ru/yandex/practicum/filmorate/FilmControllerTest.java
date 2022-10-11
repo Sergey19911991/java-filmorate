@@ -23,7 +23,7 @@ public class FilmControllerTest {
         film.setDescription("Film");
         film.setReleaseDate(LocalDate.of(1990, 12, 3));
         filmController.create(film);
-        assertEquals(film, filmController.findAll().get(0));
+        assertEquals(true, filmController.findAll().contains(film));
     }
 
 
@@ -91,8 +91,7 @@ public class FilmControllerTest {
                         film.setId(1);
                         film.setName("Film");
                         film.setDuration(60);
-                        film.setDescription("FilmFilmFilmFilmFilmFilmFilmFilmFilmFilmFilmFilmFilmFilmFilmFilmFilmFilmFilmFilmFilmFilm" +
-                                "FilmFilmFilmFilmFilmFilmFilmFilmFilmFilmFilmFilmFilmFilmFilmFilmFilmFilmFilmFilmFilmFilmFilmFilmFilmFilmFilmFilmFilmFilmFilmFilmFilmFilmFilmFilmFilmFilmFilmFilmFilmFilm");
+                        film.setDescription("Film".repeat(200));
                         film.setReleaseDate(LocalDate.of(1990, 12, 3));
                         filmController.create(film);
                     }
