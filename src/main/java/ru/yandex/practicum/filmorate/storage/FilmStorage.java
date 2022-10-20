@@ -10,7 +10,10 @@ import java.util.Collection;
 @Component
 public interface FilmStorage {
     Film create(@Valid @RequestBody Film film);
+
     Film updateFilm(@Valid @RequestBody Film film);
+
     Collection<Film> findAll();
+
     Film getFilm(int id);
 }

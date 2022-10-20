@@ -7,12 +7,9 @@ import lombok.extern.slf4j.Slf4j;
 import javax.validation.Valid;
 
 import java.util.Collection;
-import java.time.LocalDate;
-import java.util.Collections;
 import java.util.List;
 
 import ru.yandex.practicum.filmorate.model.Film;
-import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.service.FilmService;
 import ru.yandex.practicum.filmorate.storage.FilmStorage;
 
@@ -46,13 +43,13 @@ public class FilmController {
     }
 
     @GetMapping("/films/{id}")
-    public Film getFilm(@PathVariable int id){
+    public Film getFilm(@PathVariable int id) {
         return filmStorage.getFilm(id);
     }
 
     @PutMapping("/films/{id}/like/{userId}")
-    public Film putLikes(@PathVariable int id, @PathVariable int userId){
-        return filmService.putLikes(id,userId);
+    public Film putLikes(@PathVariable int id, @PathVariable int userId) {
+        return filmService.putLikes(id, userId);
     }
 
     @DeleteMapping("/films/{id}/like/{userId}")
@@ -62,7 +59,7 @@ public class FilmController {
 
     @GetMapping("/films/popular")
     public List<Film> getLikesFilms(@RequestParam(value = "count", defaultValue = "10") Integer count) {
-       return filmService.getLikesFilms(count);
+        return filmService.getLikesFilms(count);
     }
 
 }

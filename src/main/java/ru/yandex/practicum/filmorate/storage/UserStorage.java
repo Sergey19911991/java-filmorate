@@ -9,8 +9,11 @@ import java.util.Collection;
 
 @Component
 public interface UserStorage {
-    User create (@Valid @RequestBody User user);
+    User create(@Valid @RequestBody User user);
+
     User updateUser(@Valid @RequestBody User user);
+
     Collection<User> findAll();
+
     User getUser(int id);
 }

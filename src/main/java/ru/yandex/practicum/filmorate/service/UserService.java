@@ -7,16 +7,14 @@ import ru.yandex.practicum.filmorate.controller.NotFoundException;
 import ru.yandex.practicum.filmorate.storage.UserStorage;
 import ru.yandex.practicum.filmorate.model.User;
 
-import javax.management.AttributeList;
+
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
-import java.util.TreeSet;
+
 
 @Slf4j
 @Service
 public class UserService {
-   // private Set<Integer> friends = new TreeSet<>();
     private final UserStorage userStorage;
 
     @Autowired
@@ -24,8 +22,8 @@ public class UserService {
         this.userStorage = userStorage;
     }
 
-    public User putFriends (int id,int friendId){
-        if (!(userStorage.findAll().contains(userStorage.getUser(id)))||!(userStorage.findAll().contains(userStorage.getUser(friendId)))){
+    public User putFriends(int id, int friendId) {
+        if (!(userStorage.findAll().contains(userStorage.getUser(id))) || !(userStorage.findAll().contains(userStorage.getUser(friendId)))) {
             log.error("Пользователь не существует");
             throw new NotFoundException("Такого пользователя не существует");
         }
@@ -34,28 +32,28 @@ public class UserService {
         return userStorage.getUser(id);
     }
 
-    public User deletFriends (int id,int friendId){
+    public User deletFriends(int id, int friendId) {
         userStorage.getUser(id).getFriends().remove(friendId);
         userStorage.getUser(friendId).getFriends().remove(id);
         return userStorage.getUser(id);
     }
 
-    public List getFriends (int id){
-        if (!(userStorage.findAll().contains(userStorage.getUser(id)))){
+    public List getFriends(int id) {
+        if (!(userStorage.findAll().contains(userStorage.getUser(id)))) {
             log.error("Пользователь не существует");
             throw new NotFoundException("Такого пользователя не существует");
         }
         ArrayList<Integer> friendsIdUser = new ArrayList<>();
         friendsIdUser.addAll(userStorage.getUser(id).getFriends());
         ArrayList<User> friendsId = new ArrayList<>();
-        for (int i=0;i<friendsIdUser.size();i++){
+        for (int i = 0; i < friendsIdUser.size(); i++) {
             friendsId.add(userStorage.getUser(friendsIdUser.get(i)));
         }
         return friendsId;
     }
 
-    public List getCommonFriends (int id, int otherId){
-        if (!(userStorage.findAll().contains(userStorage.getUser(id)))||!(userStorage.findAll().contains(userStorage.getUser(otherId)))){
+    public List getCommonFriends(int id, int otherId) {
+        if (!(userStorage.findAll().contains(userStorage.getUser(id))) || !(userStorage.findAll().contains(userStorage.getUser(otherId)))) {
             log.error("Пользователь не существует");
             throw new NotFoundException("Такого пользователя не существует");
         }
@@ -64,9 +62,9 @@ public class UserService {
         ArrayList<Integer> otherFriends = new ArrayList<>();
         idFriends.addAll(userStorage.getUser(id).getFriends());
         otherFriends.addAll(userStorage.getUser(otherId).getFriends());
-        for (int i=0;i<idFriends.size();i++){
-            for (int k=0;k<otherFriends.size();k++){
-                if (idFriends.get(i)==otherFriends.get(k)){
+        for (int i = 0; i < idFriends.size(); i++) {
+            for (int k = 0; k < otherFriends.size(); k++) {
+                if (idFriends.get(i) == otherFriends.get(k)) {
                     commonFriends.add(userStorage.getUser(idFriends.get(i)));
                 }
             }

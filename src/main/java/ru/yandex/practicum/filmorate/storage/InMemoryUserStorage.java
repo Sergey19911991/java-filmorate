@@ -1,4 +1,5 @@
 package ru.yandex.practicum.filmorate.storage;
+
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import ru.yandex.practicum.filmorate.controller.NotFoundException;
@@ -51,8 +52,8 @@ public class InMemoryUserStorage implements UserStorage {
         return usersCollection;
     }
 
-    public User getUser(int id){
-        if (!users.containsKey(id)){
+    public User getUser(int id) {
+        if (!users.containsKey(id)) {
             log.error("Пользователь {} не существует", users.get(id));
             throw new NotFoundException("Такого пользователя не существует");
         }
@@ -80,7 +81,7 @@ public class InMemoryUserStorage implements UserStorage {
             log.error("Ошибка в дате рождения пользователя {}", user);
             throw new ValidationException("День рождения не может быть в будущем!");
         }
-        if (user.getName() == null||user.getName().isEmpty()) {
+        if (user.getName() == null || user.getName().isEmpty()) {
             user.setName(user.getLogin());
         }
     }

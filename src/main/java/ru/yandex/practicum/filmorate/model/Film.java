@@ -8,7 +8,7 @@ import java.util.Set;
 import java.util.TreeSet;
 
 @Data
-public class Film implements Comparable<Film>{
+public class Film implements Comparable<Film> {
     private int id;
     private String name;
     private String description;
@@ -20,6 +20,6 @@ public class Film implements Comparable<Film>{
 
     @Override
     public int compareTo(Film o) {
-        return (this.getLikes().size()- o.getLikes().size())*(-1);
+        return (this.getLikes().size() - o.getLikes().size()) * (-1);
     }
 }

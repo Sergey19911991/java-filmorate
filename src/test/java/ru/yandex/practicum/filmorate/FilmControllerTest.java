@@ -1,6 +1,5 @@
 package ru.yandex.practicum.filmorate;
 
-import ru.yandex.practicum.filmorate.controller.FilmController;
 import ru.yandex.practicum.filmorate.controller.ValidationException;
 import org.junit.jupiter.api.Test;
 import ru.yandex.practicum.filmorate.model.Film;
@@ -11,13 +10,12 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import org.junit.jupiter.api.function.Executable;
-import ru.yandex.practicum.filmorate.service.FilmService;
-import ru.yandex.practicum.filmorate.storage.FilmStorage;
+import ru.yandex.practicum.filmorate.storage.InMemoryFilmStorage;
+
 
 public class FilmControllerTest {
-   private FilmStorage filmStorage;
-   private FilmService filmService;
-   private FilmController filmController = new FilmController(filmStorage,filmService);
+
+    public InMemoryFilmStorage inMemoryFilmStorage = new InMemoryFilmStorage();
 
     @Test
     public void createFilm() {
@@ -26,8 +24,8 @@ public class FilmControllerTest {
         film.setDuration(60);
         film.setDescription("Film");
         film.setReleaseDate(LocalDate.of(1990, 12, 3));
-        filmController.create(film);
-        assertEquals(true, filmController.findAll().contains(film));
+        inMemoryFilmStorage.create(film);
+        assertEquals(true, inMemoryFilmStorage.findAll().contains(film));
     }
 
 
@@ -43,7 +41,7 @@ public class FilmControllerTest {
                         film.setDuration(60);
                         film.setDescription("Film");
                         film.setReleaseDate(LocalDate.of(1990, 12, 3));
-                        filmController.create(film);
+                        inMemoryFilmStorage.create(film);
                     }
                 });
     }
@@ -60,7 +58,7 @@ public class FilmControllerTest {
                         film.setDuration(-60);
                         film.setDescription("Film");
                         film.setReleaseDate(LocalDate.of(1990, 12, 3));
-                        filmController.create(film);
+                        inMemoryFilmStorage.create(film);
                     }
                 });
 
@@ -79,7 +77,7 @@ public class FilmControllerTest {
                         film.setDuration(60);
                         film.setDescription("Film");
                         film.setReleaseDate(LocalDate.of(1800, 12, 3));
-                        filmController.create(film);
+                        inMemoryFilmStorage.create(film);
                     }
                 });
     }
@@ -97,7 +95,7 @@ public class FilmControllerTest {
                         film.setDuration(60);
                         film.setDescription("Film".repeat(200));
                         film.setReleaseDate(LocalDate.of(1990, 12, 3));
-                        filmController.create(film);
+                        inMemoryFilmStorage.create(film);
                     }
                 });
     }

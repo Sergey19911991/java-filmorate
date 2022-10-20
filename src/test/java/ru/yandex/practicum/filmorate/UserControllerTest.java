@@ -1,6 +1,5 @@
 package ru.yandex.practicum.filmorate;
 
-import ru.yandex.practicum.filmorate.controller.UserController;
 import org.junit.jupiter.api.Test;
 import ru.yandex.practicum.filmorate.controller.ValidationException;
 import ru.yandex.practicum.filmorate.model.User;
@@ -11,13 +10,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import org.junit.jupiter.api.function.Executable;
-import ru.yandex.practicum.filmorate.service.UserService;
-import ru.yandex.practicum.filmorate.storage.UserStorage;
+import ru.yandex.practicum.filmorate.storage.InMemoryUserStorage;
 
 public class UserControllerTest {
-    private UserStorage userStorage;
-    private UserService userService;
-    private UserController userController = new UserController(userStorage,userService);
+    public InMemoryUserStorage inMemoryUserStorage = new InMemoryUserStorage();
 
     @Test
     public void createUser() {
@@ -27,8 +23,8 @@ public class UserControllerTest {
         user.setBirthday(LocalDate.of(1990, 12, 3));
         user.setLogin("Login");
         user.setEmail("email@mail.ru");
-        userController.create(user);
-        assertEquals(true, userController.findAll().contains(user));
+        inMemoryUserStorage.create(user);
+        assertEquals(true, inMemoryUserStorage.findAll().contains(user));
     }
 
 
@@ -44,7 +40,7 @@ public class UserControllerTest {
                         user.setBirthday(LocalDate.of(1990, 12, 3));
                         user.setLogin("Login");
                         user.setEmail("");
-                        userController.create(user);
+                        inMemoryUserStorage.create(user);
                     }
                 });
     }
@@ -61,7 +57,7 @@ public class UserControllerTest {
                         user.setBirthday(LocalDate.of(1990, 12, 3));
                         user.setLogin("Login");
                         user.setEmail("emailmail.ru");
-                        userController.create(user);
+                        inMemoryUserStorage.create(user);
                     }
                 });
     }
@@ -78,7 +74,7 @@ public class UserControllerTest {
                         user.setBirthday(LocalDate.of(1990, 12, 3));
                         user.setLogin("Log in");
                         user.setEmail("email@mail.ru");
-                        userController.create(user);
+                        inMemoryUserStorage.create(user);
                     }
                 });
 
@@ -96,7 +92,7 @@ public class UserControllerTest {
                         user.setBirthday(LocalDate.of(2222, 12, 3));
                         user.setLogin("Login");
                         user.setEmail("email@mail.ru");
-                        userController.create(user);
+                        inMemoryUserStorage.create(user);
                     }
                 });
 
