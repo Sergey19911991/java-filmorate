@@ -11,9 +11,13 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import org.junit.jupiter.api.function.Executable;
+import ru.yandex.practicum.filmorate.service.FilmService;
+import ru.yandex.practicum.filmorate.storage.FilmStorage;
 
 public class FilmControllerTest {
-    FilmController filmController = new FilmController();
+   private FilmStorage filmStorage;
+   private FilmService filmService;
+   private FilmController filmController = new FilmController(filmStorage,filmService);
 
     @Test
     public void createFilm() {

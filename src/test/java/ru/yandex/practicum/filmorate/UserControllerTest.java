@@ -6,15 +6,18 @@ import ru.yandex.practicum.filmorate.controller.ValidationException;
 import ru.yandex.practicum.filmorate.model.User;
 
 import java.time.LocalDate;
-import java.util.Arrays;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import org.junit.jupiter.api.function.Executable;
+import ru.yandex.practicum.filmorate.service.UserService;
+import ru.yandex.practicum.filmorate.storage.UserStorage;
 
 public class UserControllerTest {
-    UserController userController = new UserController();
+    private UserStorage userStorage;
+    private UserService userService;
+    private UserController userController = new UserController(userStorage,userService);
 
     @Test
     public void createUser() {
