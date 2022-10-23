@@ -37,7 +37,7 @@ public class InMemoryFilmStorage implements FilmStorage {
             if (films.containsKey(film.getId())) {
                 validationFilm(film);
                 films.put(film.getId(), film);
-                log.info("Добавлен пользователь {}", film);
+                log.info("Изменен фильм {}", film);
             } else {
                 log.error("Фильм {} не существует", film);
                 throw new NotFoundException("Такого фильма не существует");
@@ -49,8 +49,8 @@ public class InMemoryFilmStorage implements FilmStorage {
     }
 
     public Collection<Film> findAll() {
-        Collection<Film> filmsCollection = films.values();
-        return filmsCollection;
+        log.info("Список фильмов");
+        return films.values();
     }
 
     public Film getFilm(int id) {
@@ -58,6 +58,7 @@ public class InMemoryFilmStorage implements FilmStorage {
             log.error("Фильм {} не существует", films.get(id));
             throw new NotFoundException("Такого фильма не существует");
         }
+        log.info("Фильм id = {}", id);
         return films.get(id);
     }
 

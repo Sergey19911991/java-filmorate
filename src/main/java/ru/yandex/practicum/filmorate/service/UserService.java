@@ -10,6 +10,8 @@ import ru.yandex.practicum.filmorate.model.User;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 
 @Slf4j
@@ -23,55 +25,57 @@ public class UserService {
     }
 
     public User putFriends(int id, int friendId) {
-        if (!(userStorage.findAll().contains(userStorage.getUser(id))) || !(userStorage.findAll().contains(userStorage.getUser(friendId)))) {
-            log.error("Пользователь не существует");
-            throw new NotFoundException("Такого пользователя не существует");
-        }
+        NotFoundExceptionUser(id);
+        NotFoundExceptionUser(friendId);
         userStorage.getUser(id).getFriends().add(friendId);
         userStorage.getUser(friendId).getFriends().add(id);
+        log.info("Пользователь {} добавил в друзья пользователя {}", id, friendId);
         return userStorage.getUser(id);
     }
 
     public User deletFriends(int id, int friendId) {
+        NotFoundExceptionUser(id);
+        NotFoundExceptionUser(friendId);
         userStorage.getUser(id).getFriends().remove(friendId);
         userStorage.getUser(friendId).getFriends().remove(id);
+        log.info("Пользователь {} удалил из друзей пользователя {}", id, friendId);
         return userStorage.getUser(id);
     }
 
     public List getFriends(int id) {
-        if (!(userStorage.findAll().contains(userStorage.getUser(id)))) {
-            log.error("Пользователь не существует");
-            throw new NotFoundException("Такого пользователя не существует");
-        }
-        ArrayList<Integer> friendsIdUser = new ArrayList<>();
-        friendsIdUser.addAll(userStorage.getUser(id).getFriends());
+        NotFoundExceptionUser(id);
+        ArrayList<Integer> friendsIdUser = new ArrayList<>(userStorage.getUser(id).getFriends());
         ArrayList<User> friendsId = new ArrayList<>();
         for (int i = 0; i < friendsIdUser.size(); i++) {
             friendsId.add(userStorage.getUser(friendsIdUser.get(i)));
         }
+        log.info("Список друзей пользователя {}", id);
         return friendsId;
     }
 
     public List getCommonFriends(int id, int otherId) {
-        if (!(userStorage.findAll().contains(userStorage.getUser(id))) || !(userStorage.findAll().contains(userStorage.getUser(otherId)))) {
-            log.error("Пользователь не существует");
-            throw new NotFoundException("Такого пользователя не существует");
-        }
+        NotFoundExceptionUser(id);
+        NotFoundExceptionUser(otherId);
         ArrayList<User> commonFriends = new ArrayList<>();
-        ArrayList<Integer> idFriends = new ArrayList<>();
-        ArrayList<Integer> otherFriends = new ArrayList<>();
-        idFriends.addAll(userStorage.getUser(id).getFriends());
-        otherFriends.addAll(userStorage.getUser(otherId).getFriends());
-        for (int i = 0; i < idFriends.size(); i++) {
-            for (int k = 0; k < otherFriends.size(); k++) {
-                if (idFriends.get(i) == otherFriends.get(k)) {
-                    commonFriends.add(userStorage.getUser(idFriends.get(i)));
-                }
-            }
-
+        ArrayList<Integer> idFriends = new ArrayList<>(userStorage.getUser(id).getFriends());
+        ArrayList<Integer> otherFriends = new ArrayList<>(userStorage.getUser(otherId).getFriends());
+        Set<Integer> commonIdFriends = findCommonElements(idFriends, otherFriends);
+        for (Integer commonIdFriend : commonIdFriends) {
+            commonFriends.add(userStorage.getUser(commonIdFriend));
         }
+        log.info("Список общих друзей пользователей {} и {}", id, otherId);
         return commonFriends;
     }
 
+    public void NotFoundExceptionUser(int id) {
+        if (!(userStorage.findAll().contains(userStorage.getUser(id)))) {
+            log.error("Пользователь {} не существует", id);
+            throw new NotFoundException("Такого пользователя не существует");
+        }
+    }
+
+    private static <T> Set<T> findCommonElements(List<T> first, List<T> second) {
+        return first.stream().filter(second::contains).collect(Collectors.toSet());
+    }
 
 }

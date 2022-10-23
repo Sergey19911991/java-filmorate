@@ -14,6 +14,7 @@ import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.service.UserService;
 import ru.yandex.practicum.filmorate.storage.UserStorage;
 
+@RequestMapping("/users")
 @Slf4j
 @RestController
 public class UserController {
@@ -26,44 +27,44 @@ public class UserController {
         this.userService = userService;
     }
 
-    @PostMapping(value = "/users")
+    @PostMapping(value = "")
     public User create(@Valid @RequestBody User user) {
         return userStorage.create(user);
     }
 
 
-    @PutMapping("/users")
+    @PutMapping("")
     public User updateUser(@Valid @RequestBody User user) {
         return userStorage.updateUser(user);
     }
 
 
-    @GetMapping("/users")
+    @GetMapping("")
     public Collection<User> findAll() {
         return userStorage.findAll();
     }
 
-    @GetMapping("/users/{id}")
+    @GetMapping("/{id}")
     public User getUser(@PathVariable int id) {
         return userStorage.getUser(id);
     }
 
-    @PutMapping("/users/{id}/friends/{friendId}")
+    @PutMapping("/{id}/friends/{friendId}")
     public User putFriends(@PathVariable int id, @PathVariable int friendId) {
         return userService.putFriends(id, friendId);
     }
 
-    @DeleteMapping("/users/{id}/friends/{friendId}")
+    @DeleteMapping("/{id}/friends/{friendId}")
     public User deletFriends(@PathVariable int id, @PathVariable int friendId) {
         return userService.deletFriends(id, friendId);
     }
 
-    @GetMapping("/users/{id}/friends")
+    @GetMapping("/{id}/friends")
     public List getFriends(@PathVariable int id) {
         return userService.getFriends(id);
     }
 
-    @GetMapping("/users/{id}/friends/common/{otherId}")
+    @GetMapping("/{id}/friends/common/{otherId}")
     public List getCommonFriends(@PathVariable int id, @PathVariable int otherId) {
         return userService.getCommonFriends(id, otherId);
     }

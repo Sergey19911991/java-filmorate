@@ -1,16 +1,17 @@
 package ru.yandex.practicum.filmorate;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 import ru.yandex.practicum.filmorate.controller.ValidationException;
 import ru.yandex.practicum.filmorate.model.User;
 
 import java.time.LocalDate;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-
 import org.junit.jupiter.api.function.Executable;
 import ru.yandex.practicum.filmorate.storage.InMemoryUserStorage;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 public class UserControllerTest {
     public InMemoryUserStorage inMemoryUserStorage = new InMemoryUserStorage();
@@ -24,13 +25,32 @@ public class UserControllerTest {
         user.setLogin("Login");
         user.setEmail("email@mail.ru");
         inMemoryUserStorage.create(user);
-        assertEquals(true, inMemoryUserStorage.findAll().contains(user));
+        assertTrue(inMemoryUserStorage.findAll().contains(user));
     }
 
 
+    @ParameterizedTest
+    @CsvSource({"User,Login, emailemail,1990, 12, 3",
+            "User,Log in,emailemail,1990, 12, 3",
+            "User,Login, emailemail,2222, 12, 3"})
+    public void errorEmail(String name, String login, String email, int year, int month, int day) {
+        assertThrows(
+                ValidationException.class,
+                () -> {
+                    {
+                        User user = new User();
+                        user.setName(name);
+                        user.setBirthday(LocalDate.of(year, month, day));
+                        user.setLogin(login);
+                        user.setEmail(email);
+                        inMemoryUserStorage.create(user);
+                    }
+                });
+    }
+
     @Test
-    public void errorEmail() {
-        final ValidationException exception = assertThrows(
+    public void errorEmail1() {
+        assertThrows(
                 ValidationException.class,
                 new Executable() {
                     @Override
@@ -46,33 +66,14 @@ public class UserControllerTest {
     }
 
     @Test
-    public void errorEmail1() {
-        final ValidationException exception = assertThrows(
-                ValidationException.class,
-                new Executable() {
-                    @Override
-                    public void execute() {
-                        User user = new User();
-                        user.setName("Name");
-                        user.setBirthday(LocalDate.of(1990, 12, 3));
-                        user.setLogin("Login");
-                        user.setEmail("emailmail.ru");
-                        inMemoryUserStorage.create(user);
-                    }
-                });
-    }
-
-    @Test
     public void errorLogin() {
-        final ValidationException exception = assertThrows(
-                ValidationException.class,
-                new Executable() {
-                    @Override
-                    public void execute() {
+        assertThrows(
+                ValidationException.class, () -> {
+                    {
                         User user = new User();
                         user.setName("Name");
                         user.setBirthday(LocalDate.of(1990, 12, 3));
-                        user.setLogin("Log in");
+                        user.setLogin("");
                         user.setEmail("email@mail.ru");
                         inMemoryUserStorage.create(user);
                     }
@@ -80,21 +81,4 @@ public class UserControllerTest {
 
     }
 
-    @Test
-    public void errorBirthday() {
-        final ValidationException exception = assertThrows(
-                ValidationException.class,
-                new Executable() {
-                    @Override
-                    public void execute() {
-                        User user = new User();
-                        user.setName("Name");
-                        user.setBirthday(LocalDate.of(2222, 12, 3));
-                        user.setLogin("Login");
-                        user.setEmail("email@mail.ru");
-                        inMemoryUserStorage.create(user);
-                    }
-                });
-
-    }
 }

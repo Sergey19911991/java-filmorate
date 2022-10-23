@@ -16,6 +16,7 @@ public class User {
     private String name;
     @NotNull
     private String login;
+    @NotNull
     private LocalDate birthday;
     private Set<Integer> friends = new TreeSet<>();
 }

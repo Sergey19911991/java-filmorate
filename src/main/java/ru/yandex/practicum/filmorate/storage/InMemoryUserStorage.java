@@ -48,8 +48,8 @@ public class InMemoryUserStorage implements UserStorage {
     }
 
     public Collection<User> findAll() {
-        Collection<User> usersCollection = users.values();
-        return usersCollection;
+        log.error("Список пользователей");
+        return users.values();
     }
 
     public User getUser(int id) {
@@ -57,6 +57,7 @@ public class InMemoryUserStorage implements UserStorage {
             log.error("Пользователь {} не существует", users.get(id));
             throw new NotFoundException("Такого пользователя не существует");
         }
+        log.info("Пользователь id = {}", id);
         return users.get(id);
     }
 
@@ -85,4 +86,5 @@ public class InMemoryUserStorage implements UserStorage {
             user.setName(user.getLogin());
         }
     }
+
 }
