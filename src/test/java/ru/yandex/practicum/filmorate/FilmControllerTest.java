@@ -1,19 +1,21 @@
 package ru.yandex.practicum.filmorate;
 
-import ru.yandex.practicum.filmorate.controller.FilmController;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 import ru.yandex.practicum.filmorate.controller.ValidationException;
 import org.junit.jupiter.api.Test;
 import ru.yandex.practicum.filmorate.model.Film;
 
 import java.time.LocalDate;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import ru.yandex.practicum.filmorate.storage.InMemoryFilmStorage;
 
-import org.junit.jupiter.api.function.Executable;
+import static org.junit.jupiter.api.Assertions.*;
+
 
 public class FilmControllerTest {
-    FilmController filmController = new FilmController();
+
+    public InMemoryFilmStorage inMemoryFilmStorage = new InMemoryFilmStorage();
 
     @Test
     public void createFilm() {
@@ -22,80 +24,43 @@ public class FilmControllerTest {
         film.setDuration(60);
         film.setDescription("Film");
         film.setReleaseDate(LocalDate.of(1990, 12, 3));
-        filmController.create(film);
-        assertEquals(true, filmController.findAll().contains(film));
+        inMemoryFilmStorage.create(film);
+        assertTrue(inMemoryFilmStorage.findAll().contains(film));
     }
 
 
     @Test
     public void errorName() {
-        final ValidationException exception = assertThrows(
-                ValidationException.class,
-                new Executable() {
-                    @Override
-                    public void execute() {
+        assertThrows(
+                ValidationException.class, () -> {
+                    {
                         Film film = new Film();
                         film.setName("");
                         film.setDuration(60);
                         film.setDescription("Film");
                         film.setReleaseDate(LocalDate.of(1990, 12, 3));
-                        filmController.create(film);
+                        inMemoryFilmStorage.create(film);
                     }
                 });
     }
 
-    @Test
-    public void errorDuration() {
-        final ValidationException exception = assertThrows(
-                ValidationException.class,
-                new Executable() {
-                    @Override
-                    public void execute() {
+    @ParameterizedTest
+    @CsvSource({"Film,-60, Film,1990, 12, 3,1",
+            "Film,60,Film,1800,12,3,1", "Film,60,Film,1990,12,3,200"})
+    public void errorDurationReleaseDateDescription(String name, int duration, String description, int year, int month, int day, int repetition) {
+        assertThrows(
+                ValidationException.class, () -> {
+                    {
                         Film film = new Film();
-                        film.setName("Film");
-                        film.setDuration(-60);
-                        film.setDescription("Film");
-                        film.setReleaseDate(LocalDate.of(1990, 12, 3));
-                        filmController.create(film);
+                        film.setName(name);
+                        film.setDuration(duration);
+                        film.setDescription(description.repeat(repetition));
+                        film.setReleaseDate(LocalDate.of(year, month, day));
+                        inMemoryFilmStorage.create(film);
                     }
                 });
 
     }
 
-    @Test
-    public void errorReleaseDate() {
-        final ValidationException exception = assertThrows(
-                ValidationException.class,
-                new Executable() {
-                    @Override
-                    public void execute() {
-                        Film film = new Film();
-                        film.setId(1);
-                        film.setName("Film");
-                        film.setDuration(60);
-                        film.setDescription("Film");
-                        film.setReleaseDate(LocalDate.of(1800, 12, 3));
-                        filmController.create(film);
-                    }
-                });
-    }
-
-    @Test
-    public void errorDescription() {
-        final ValidationException exception = assertThrows(
-                ValidationException.class,
-                new Executable() {
-                    @Override
-                    public void execute() {
-                        Film film = new Film();
-                        film.setId(1);
-                        film.setName("Film");
-                        film.setDuration(60);
-                        film.setDescription("Film".repeat(200));
-                        film.setReleaseDate(LocalDate.of(1990, 12, 3));
-                        filmController.create(film);
-                    }
-                });
-    }
 }
 
