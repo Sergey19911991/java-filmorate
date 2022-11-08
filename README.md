@@ -84,8 +84,7 @@ WHERE  uf.id_user=1 <br/>
                            WHERE uf.id_user=2<br/>
                            AND uf.id.status ='подтвержденная'<br/>
                            GROUP BY u.name_user<br/>
-                           ORDER BY u.name_user DESC<br/>
-                           )<br/>        
+                           ORDER BY u.name_user DESC)<br/>       
 GROUP BY u.name_user<br/>
 ORDER BY u.name_user DESC;<br/>
 
