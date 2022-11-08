@@ -3,17 +3,17 @@ Template repository for Filmorate project.
  ![](https://github.com/Sergey19911991/java-filmorate/blob/main/Untitled.png)
  
  // получение всех фильмов
-SELECT f.name,
-       f.description,
-       f.releaseDate,
-       f.duration,
-       fr.name_rating,
-       fg.name_genre
-FROM films AS f
-LEFT OUTER JOIN films_rating AS fr ON f.id_rating=fr.id_rating
-LEFT OUTER JOIN films_genre AS fg ON f.id_genre=fg.id_genre
-GROUP BY f.name
-ORDER BY f.name DESC;
+SELECT f.name,<br/>
+       f.description,<br/>
+       f.releaseDate,<br/>
+       f.duration,<br/>
+       fr.name_rating,<br/>
+       fg.name_genre<br/>
+FROM films AS f<br/>
+LEFT OUTER JOIN films_rating AS fr ON f.id_rating=fr.id_rating<br/>
+LEFT OUTER JOIN films_genre AS fg ON f.id_genre=fg.id_genre<br/>
+GROUP BY f.name<br/>
+ORDER BY f.name DESC;<br/>
 
 
 
