@@ -4,11 +4,11 @@ Template repository for Filmorate project.
  
  // получение всех фильмов
 SELECT f.name,<br/>
-       >f.description,<br/>
-       >f.releaseDate,<br/>
-       >f.duration,<br/>
-       >fr.name_rating,<br/>
-       >fg.name_genre<br/>
+       f.description,<br/>
+       f.releaseDate,<br/>
+       f.duration,<br/>
+       fr.name_rating,<br/>
+       fg.name_genre<br/>
 FROM films AS f<br/>
 LEFT OUTER JOIN films_rating AS fr ON f.id_rating=fr.id_rating<br/>
 LEFT OUTER JOIN films_genre AS fg ON f.id_genre=fg.id_genre<br/>
