@@ -8,10 +8,10 @@ import javax.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.Collection;
-import java.util.List;
 
 import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.service.UserService;
+import ru.yandex.practicum.filmorate.storage.UserDbStorage;
 import ru.yandex.practicum.filmorate.storage.UserStorage;
 
 @RequestMapping("/users")
@@ -21,52 +21,55 @@ public class UserController {
     private final UserStorage userStorage;
     private final UserService userService;
 
+    private final UserDbStorage userDbStorage;
+
     @Autowired
-    public UserController(UserStorage userStorage, UserService userService) {
+    public UserController(UserDbStorage userDbStorage, UserStorage userStorage, UserService userService) {
         this.userStorage = userStorage;
         this.userService = userService;
+        this.userDbStorage = userDbStorage;
     }
 
     @PostMapping(value = "")
     public User create(@Valid @RequestBody User user) {
-        return userStorage.create(user);
+        return userDbStorage.create(user);
     }
 
 
     @PutMapping("")
     public User updateUser(@Valid @RequestBody User user) {
-        return userStorage.updateUser(user);
+        return userDbStorage.updateUser(user);
     }
 
 
     @GetMapping("")
     public Collection<User> findAll() {
-        return userStorage.findAll();
+        return userDbStorage.findAll();
     }
 
     @GetMapping("/{id}")
     public User getUser(@PathVariable int id) {
-        return userStorage.getUser(id);
+        return userDbStorage.getUser(id);
     }
 
     @PutMapping("/{id}/friends/{friendId}")
     public User putFriends(@PathVariable int id, @PathVariable int friendId) {
-        return userService.putFriends(id, friendId);
+        return userDbStorage.putFriends(id, friendId);
     }
 
     @DeleteMapping("/{id}/friends/{friendId}")
-    public User deletFriends(@PathVariable int id, @PathVariable int friendId) {
-        return userService.deletFriends(id, friendId);
+    public int deletFriends(@PathVariable int id, @PathVariable int friendId) {
+        return userDbStorage.deletFriends(id, friendId);
     }
 
     @GetMapping("/{id}/friends")
-    public List getFriends(@PathVariable int id) {
-        return userService.getFriends(id);
+    public Collection<User> getFriends(@PathVariable int id) {
+        return userDbStorage.getFriends(id);
     }
 
     @GetMapping("/{id}/friends/common/{otherId}")
-    public List getCommonFriends(@PathVariable int id, @PathVariable int otherId) {
-        return userService.getCommonFriends(id, otherId);
+    public Collection<User> getCommonFriends(@PathVariable int id, @PathVariable int otherId) {
+        return userDbStorage.getCommonFriends(id, otherId);
     }
 
 }
