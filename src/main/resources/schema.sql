@@ -1,11 +1,11 @@
 
-Drop table USERS_FRIENDS;
+/*Drop table USERS_FRIENDS;
 Drop table FILMS_LIKES;
 Drop table USERS;
 Drop table FILMS_GENRE;
 Drop table GENRE_NAME;
 Drop table FILMS;
-Drop table FILMS_RATING;
+Drop table FILMS_RATING;*/
 
 
 

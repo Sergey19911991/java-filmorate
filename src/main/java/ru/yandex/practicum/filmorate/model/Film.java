@@ -24,8 +24,6 @@ public class Film implements Comparable<Film> {
     private Set<Genre> genres;
     @NotNull
     private Mpa mpa;
- public Film(){}
-
 
 
     @Override
