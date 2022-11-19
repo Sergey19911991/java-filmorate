@@ -1,11 +1,11 @@
 
-/*Drop table USERS_FRIENDS;
-Drop table FILMS_LIKES;
-Drop table USERS;
-Drop table FILMS_GENRE;
-Drop table GENRE_NAME;
-Drop table FILMS;
-Drop table FILMS_RATING;*/
+Drop table IF EXISTS USERS_FRIENDS;
+Drop table IF EXISTS FILMS_LIKES;
+Drop table IF EXISTS USERS;
+Drop table IF EXISTS FILMS_GENRE;
+Drop table IF EXISTS GENRE_NAME;
+Drop table IF EXISTS FILMS;
+Drop table IF EXISTS FILMS_RATING;
 
 
 
