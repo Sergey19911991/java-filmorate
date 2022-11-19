@@ -1,16 +1,16 @@
 
 INSERT INTO GENRE_NAME(GENRE_NAME)
-values('Комедия');
+values(     'РљРѕРјРµРґРёСЏ');
 INSERT INTO GENRE_NAME(GENRE_NAME)
-values('Драма');
+values('Р”СЂР°РјР°');
 INSERT INTO GENRE_NAME(GENRE_NAME)
-values('Мультфильм');
+values('РњСѓР»СЊС‚С„РёР»СЊРј');
 INSERT INTO GENRE_NAME(GENRE_NAME)
-values('Триллер');
+values('РўСЂРёР»Р»РµСЂ');
 INSERT INTO GENRE_NAME(GENRE_NAME)
-values('Боевик');
+values('Р‘РѕРµРІРёРє');
 INSERT INTO GENRE_NAME(GENRE_NAME)
-values('Документальный');
+values('Р”РѕРєСѓРјРµРЅС‚Р°Р»СЊРЅС‹Р№');
 
 INSERT INTO FILMS_RATING(RATING_NAME)
 values('G');
