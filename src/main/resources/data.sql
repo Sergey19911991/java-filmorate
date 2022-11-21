@@ -8,9 +8,9 @@ values('Мультфильм');
 INSERT INTO GENRE_NAME(GENRE_NAME)
 values('Триллер');
 INSERT INTO GENRE_NAME(GENRE_NAME)
-values('Боевик');
-INSERT INTO GENRE_NAME(GENRE_NAME)
 values('Документальный');
+INSERT INTO GENRE_NAME(GENRE_NAME)
+values('Боевик');
 
 INSERT INTO FILMS_RATING(RATING_NAME)
 values('G');
