@@ -7,7 +7,7 @@ import org.junit.jupiter.params.provider.CsvSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
-import ru.yandex.practicum.filmorate.controller.ValidationException;
+import ru.yandex.practicum.filmorate.exeption.ValidationException;
 import ru.yandex.practicum.filmorate.model.Film;
 
 import java.time.LocalDate;
@@ -57,7 +57,7 @@ public class FilmControllerTest {
                                 .name("")
                                 .duration(60)
                                 .releaseDate(LocalDate.of(1991,06,06))
-                                .description("Фильм".repeat(1))
+                                .description("пїЅпїЅпїЅпїЅпїЅ".repeat(1))
                                 .mpa(mpa)
                                 .build());
                     }
