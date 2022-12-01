@@ -1,49 +1,44 @@
 package ru.yandex.practicum.filmorate;
 
+import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
-import ru.yandex.practicum.filmorate.controller.ValidationException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
+import org.springframework.boot.test.context.SpringBootTest;
+import ru.yandex.practicum.filmorate.exeption.ValidationException;
 import ru.yandex.practicum.filmorate.model.User;
 
 import java.time.LocalDate;
 
 import org.junit.jupiter.api.function.Executable;
-import ru.yandex.practicum.filmorate.storage.InMemoryUserStorage;
+import ru.yandex.practicum.filmorate.storage.UserDbStorage;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@SpringBootTest
+@AutoConfigureTestDatabase
+@RequiredArgsConstructor(onConstructor_ = @Autowired)
 public class UserControllerTest {
-    public InMemoryUserStorage inMemoryUserStorage = new InMemoryUserStorage();
-
-    @Test
-    public void createUser() {
-        User user = new User();
-        user.setId(1);
-        user.setName("User");
-        user.setBirthday(LocalDate.of(1990, 12, 3));
-        user.setLogin("Login");
-        user.setEmail("email@mail.ru");
-        inMemoryUserStorage.create(user);
-        assertTrue(inMemoryUserStorage.findAll().contains(user));
-    }
+    private final UserDbStorage userDbStorage;
 
 
     @ParameterizedTest
     @CsvSource({"User,Login, emailemail,1990, 12, 3",
             "User,Log in,emailemail,1990, 12, 3",
             "User,Login, emailemail,2222, 12, 3"})
-    public void errorEmail(String name, String login, String email, int year, int month, int day) {
+    public void errorEmailBirthDateLogin(String name, String login, String email, int year, int month, int day) {
         assertThrows(
                 ValidationException.class,
                 () -> {
                     {
-                        User user = new User();
-                        user.setName(name);
-                        user.setBirthday(LocalDate.of(year, month, day));
-                        user.setLogin(login);
-                        user.setEmail(email);
-                        inMemoryUserStorage.create(user);
+                        userDbStorage.create(User.builder()
+                                .email(email)
+                                .birthday(LocalDate.of(year, month, day))
+                                .name(name)
+                                .login(login)
+                                .build());
                     }
                 });
     }
@@ -55,12 +50,12 @@ public class UserControllerTest {
                 new Executable() {
                     @Override
                     public void execute() {
-                        User user = new User();
-                        user.setName("Name");
-                        user.setBirthday(LocalDate.of(1990, 12, 3));
-                        user.setLogin("Login");
-                        user.setEmail("");
-                        inMemoryUserStorage.create(user);
+                        userDbStorage.create(User.builder()
+                                .email("")
+                                .birthday(LocalDate.of(1991, 06, 19))
+                                .name("Name")
+                                .login("login")
+                                .build());
                     }
                 });
     }
@@ -70,12 +65,12 @@ public class UserControllerTest {
         assertThrows(
                 ValidationException.class, () -> {
                     {
-                        User user = new User();
-                        user.setName("Name");
-                        user.setBirthday(LocalDate.of(1990, 12, 3));
-                        user.setLogin("");
-                        user.setEmail("email@mail.ru");
-                        inMemoryUserStorage.create(user);
+                        userDbStorage.create(User.builder()
+                                .email("email@email")
+                                .birthday(LocalDate.of(1991, 06, 19))
+                                .name("Name")
+                                .login("")
+                                .build());
                     }
                 });
 
