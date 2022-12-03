@@ -52,7 +52,9 @@ public class FilmDbService {
         return filmDbStorage.getLikesFilms(count);
     }
 
-
+    public List<Film> getMostPopularByYearAndGenre(Integer count, Integer genreId, Integer year) {
+        return filmDbStorage.getMostPopularByYearAndGenre(count, genreId, year);
+    }
 
 
 
