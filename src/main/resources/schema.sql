@@ -4,8 +4,12 @@ Drop table IF EXISTS FILMS_LIKES;
 Drop table IF EXISTS USERS;
 Drop table IF EXISTS FILMS_GENRE;
 Drop table IF EXISTS GENRE_NAME;
+Drop table IF EXISTS FILMS_DIRECTORS;
+Drop table IF EXISTS DIRECTORS;
 Drop table IF EXISTS FILMS;
 Drop table IF EXISTS FILMS_RATING;
+
+
 
 
 
@@ -17,6 +21,8 @@ create table IF NOT EXISTS FILMS_RATING
     constraint FILMS_RATING_PK
         primary key (RATING_ID)
 );
+
+
 
 
 create table IF NOT EXISTS FILMS
@@ -48,6 +54,25 @@ create table IF NOT EXISTS FILMS_GENRE
     constraint FILMS_GENRE_GENRE_NAME_GENRE_ID_FK
         foreign key (GENRE_ID) references GENRE_NAME
 );
+
+create table IF NOT EXISTS DIRECTORS
+(
+    DIRECTORS_ID   INTEGER auto_increment,
+    DIRECTORS_NAME CHARACTER VARYING,
+    constraint DIRECTORS_PK
+        primary key (DIRECTORS_ID)
+);
+
+create table IF NOT EXISTS FILMS_DIRECTORS
+(
+    FILMS_ID     INTEGER,
+    DIRECTORS_ID INTEGER,
+    constraint FILMS_DIRECTORS_DIRECTORS_DIRECTORS_ID_FK
+        foreign key (DIRECTORS_ID) references DIRECTORS,
+    constraint FILMS_DIRECTORS_FILMS_FILMS_ID_FK
+        foreign key (FILMS_ID) references FILMS
+);
+
 create table IF NOT EXISTS USERS
 (
     USERS_ID        INTEGER auto_increment,
@@ -80,3 +105,4 @@ create table IF NOT EXISTS USERS_FRIENDS
     constraint USERS_FRIENDS_USERS_USERS_ID_FK_2
         foreign key (USERS_FRIEND_ID) references USERS
 );
+
