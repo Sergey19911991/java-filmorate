@@ -20,10 +20,11 @@ public class Film implements Comparable<Film> {
     private LocalDate releaseDate;
     @Positive
     private double duration;
-    private Set<Integer> likes = new TreeSet<>();
+    private Set<Integer> likes;
     private Set<Genre> genres;
     @NotNull
     private Mpa mpa;
+    private Set<Director> directors;
 
 
     @Override
