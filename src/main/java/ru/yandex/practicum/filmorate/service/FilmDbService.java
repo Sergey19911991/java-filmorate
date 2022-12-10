@@ -52,10 +52,24 @@ public class FilmDbService {
         return filmDbStorage.getLikesFilms(count);
     }
 
+    public List<Film> getYearFilm(int id) {
+        return filmDbStorage.getYearFilm(id);
+    }
 
+    public List<Film> getLikesFilmDirector(int id) {
+        return filmDbStorage.getLikesFilmDirector(id);
+    }
 
+    public List<Film> getLikesFilmsString(String title) {
+        return filmDbStorage.getLikesFilmsString(title);
+    }
 
+    public List<Film> getLikesFilmsDirector(String director) {
+        return filmDbStorage.getLikesFilmsDirector(director);
+    }
 
-
+    public List<Film> getLikesFilmsDirectorName(String directorName) {
+        return filmDbStorage.getLikesFilmsDirectorName(directorName);
+    }
 
 }
