@@ -1,6 +1,10 @@
 
 Drop table IF EXISTS USERS_FRIENDS;
 Drop table IF EXISTS FILMS_LIKES;
+-- не понял, зачем их дропать, но по аналогии
+Drop TABLE IF EXISTS REVIEWSBYlIKES;
+DROP TABLE IF EXISTS REVIEWS;
+-----------------------------------------
 Drop table IF EXISTS USERS;
 Drop table IF EXISTS FILMS_GENRE;
 Drop table IF EXISTS GENRE_NAME;
@@ -8,6 +12,8 @@ Drop table IF EXISTS FILMS_DIRECTORS;
 Drop table IF EXISTS DIRECTORS;
 Drop table IF EXISTS FILMS;
 Drop table IF EXISTS FILMS_RATING;
+
+
 
 
 
@@ -104,5 +110,26 @@ create table IF NOT EXISTS USERS_FRIENDS
         foreign key (USERS_ID) references USERS,
     constraint USERS_FRIENDS_USERS_USERS_ID_FK_2
         foreign key (USERS_FRIEND_ID) references USERS
+);
+
+
+
+create table IF NOT EXISTS REVIEWS
+(
+    id          integer      not null primary key,
+    content     varchar(500) not null,
+    is_positive boolean      not null,
+    user_id     integer      not null references users (USERS_ID),
+    film_id     integer      not null references films (FILMS_id),
+    useful integer default 0
+);
+
+CREATE TABLE IF NOT EXISTS REVIEWSBYlIKES
+(
+    REVIEW_ID INTEGER REFERENCES REVIEWS(ID),
+    IS_LIKE   BOOLEAN NOT NULL,
+    USER_ID   INTEGER REFERENCES USERS(USERS_ID),
+    PRIMARY KEY (REVIEW_ID, IS_LIKE, USER_ID)
+
 );
 
