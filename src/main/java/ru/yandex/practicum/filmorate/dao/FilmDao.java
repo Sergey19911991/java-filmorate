@@ -264,10 +264,11 @@ public class FilmDao {
         }
     }
 
-    private Set<Genre> getGenreSet(int id) {
+    //Сергей 10.12
+    private LinkedHashSet<Genre> getGenreSet(int id) {
         String sqlQuery = "select gm.GENRE_ID,gm.GENRE_NAME from GENRE_NAME AS gm LEFT JOIN FILMS_GENRE AS fg ON fg.GENRE_ID=gm.GENRE_ID where fg.FILMS_ID = ?";
         List<Genre> list = new ArrayList<Genre>(jdbcTemplate.query(sqlQuery, this::mapRowToGenre, id));
-        Set<Genre> genre = new HashSet<Genre>(list);
+        LinkedHashSet<Genre> genre = new LinkedHashSet<Genre>(list);
         return genre;
     }
 
