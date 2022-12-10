@@ -71,6 +71,12 @@ public class FilmDbStorage implements FilmStorage {
         return filmDao.getRating(id);
     }
 
+
+    public List<Film> getMostPopularByYearAndGenre(Integer count, Integer genreId, Integer year) {
+        return filmDao.getMostPopularByYearAndGenre(count, genreId, year);
+    }
+
+
     public Director creatDirector (@Valid Director director){
         return filmDao.creatDirector(director);
     }

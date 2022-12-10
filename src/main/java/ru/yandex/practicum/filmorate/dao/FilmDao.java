@@ -271,6 +271,32 @@ public class FilmDao {
         return genre;
     }
 
+
+    public List<Film> getMostPopularByYearAndGenre(Integer count, Integer genreId, Integer year) {
+        if (genreId != null && year != null) {
+            String sqlQuery = "SELECT DISTINCT * FROM FILMS AS f " +
+                    "LEFT JOIN FILMS_GENRE AS fg ON f.FILMS_ID = fg.FILMS_ID " +
+                    "LEFT JOIN FILMS_LIKES AS fl ON f.FILMS_ID=fl.FILMS_ID " +
+                    "WHERE fg.GENRE_ID = ? AND EXTRACT(YEAR FROM f.FILMS_RELEASE_DATE) = ? " +
+                    "GROUP BY f.FILMS_ID ORDER BY COUNT(fl.FILMS_ID) DESC LIMIT ?";
+            return jdbcTemplate.query(sqlQuery, this::mapRowToFilm, genreId, year, count);
+        } else if (genreId != null) {
+            String sqlQuery = "SELECT DISTINCT * FROM FILMS AS f " +
+                    "LEFT JOIN FILMS_GENRE AS fg ON f.FILMS_ID = fg.FILMS_ID " +
+                    "LEFT JOIN FILMS_LIKES AS fl ON f.FILMS_ID=fl.FILMS_ID " +
+                    "WHERE fg.GENRE_ID = ? " +
+                    "GROUP BY f.FILMS_ID ORDER BY COUNT(fl.FILMS_ID) DESC LIMIT ?";
+            return jdbcTemplate.query(sqlQuery, this::mapRowToFilm, genreId, count);
+        } else {
+            String sqlQuery = "SELECT DISTINCT * FROM FILMS AS f " +
+                    "LEFT JOIN FILMS_LIKES AS fl ON f.FILMS_ID=fl.FILMS_ID " +
+                    "WHERE EXTRACT(YEAR FROM f.FILMS_RELEASE_DATE) = ? " +
+                    "GROUP BY f.FILMS_ID ORDER BY COUNT(fl.FILMS_ID) DESC LIMIT ?";
+            return jdbcTemplate.query(sqlQuery, this::mapRowToFilm, year, count);
+        }
+    }
+
+
     private Director mapRowToDirector(ResultSet resultSet, int rowNum) throws SQLException {
         return Director.builder()
                 .id(resultSet.getInt("DIRECTORS_ID"))
@@ -409,5 +435,6 @@ public class FilmDao {
         log.info("Список фильмов по популярности, в имени режиссера которых содежиться {}", directorName);
         return jdbcTemplate.query(sqlQueryLikes, this::mapRowToFilm, directorName,directorName);
     }
+
 
 }
