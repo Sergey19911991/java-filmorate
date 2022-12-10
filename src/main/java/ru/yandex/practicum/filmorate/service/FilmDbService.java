@@ -77,4 +77,8 @@ public class FilmDbService {
         return filmDbStorage.getLikesFilmsDirectorName(directorName);
     }
 
+    public List<Film> getCommonFilm (int userId, int friendId){
+        return filmDbStorage.getCommonFilm(userId,friendId);
+    }
+
 }

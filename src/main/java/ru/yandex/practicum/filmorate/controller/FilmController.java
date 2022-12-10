@@ -93,5 +93,9 @@ public class FilmController {
         }
         return list;
     }
+    @GetMapping("/films/common")
+    public List<Film> getCommonFilm (@RequestParam int userId,@RequestParam int friendId){
+             return  filmDbService.getCommonFilm(userId,friendId);
+    }
 
 }

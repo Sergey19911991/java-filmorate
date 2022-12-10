@@ -116,4 +116,8 @@ public class FilmDbStorage implements FilmStorage {
     public List<Film> getLikesFilmsDirectorName(String directorName) {
         return filmDao.getLikesFilmsDirectorName(directorName);
     }
+
+    public List<Film> getCommonFilm (int userId, int friendId){
+        return filmDao.getCommonFilm(userId,friendId);
+    }
 }
