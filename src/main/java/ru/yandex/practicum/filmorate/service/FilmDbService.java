@@ -55,7 +55,7 @@ public class FilmDbService {
 
     public List<Film> getMostPopularByYearAndGenre(Integer count, Integer genreId, Integer year) {
         return filmDbStorage.getMostPopularByYearAndGenre(count, genreId, year);
-
+    }
     public List<Film> getYearFilm(int id) {
         return filmDbStorage.getYearFilm(id);
     }
