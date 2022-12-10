@@ -1,7 +1,9 @@
 package ru.yandex.practicum.filmorate.storage;
 
 import org.springframework.context.annotation.Primary;
+import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Component;
+import ru.yandex.practicum.filmorate.exeption.NotFoundException;
 import ru.yandex.practicum.filmorate.model.*;
 
 import java.util.Collection;
@@ -69,8 +71,49 @@ public class FilmDbStorage implements FilmStorage {
         return filmDao.getRating(id);
     }
 
+
     public List<Film> getMostPopularByYearAndGenre(Integer count, Integer genreId, Integer year) {
         return filmDao.getMostPopularByYearAndGenre(count, genreId, year);
     }
 
+
+    public Director creatDirector (@Valid Director director){
+        return filmDao.creatDirector(director);
+    }
+
+    public Collection<Director> getAllDirector() {
+        return filmDao.getAllDirector();
+    }
+
+    public Director findDirectorById(int id) {
+        return filmDao.findDirectorById(id);
+    }
+
+    public int deletDirector(int id) {
+        return filmDao.deletDirector(id);
+    }
+
+    public Director updateDirector(@Valid Director director) {
+        return filmDao.updateDirector(director);
+    }
+
+    public List<Film> getYearFilm(int id) {
+        return filmDao.getYearFilm(id);
+    }
+
+    public List<Film> getLikesFilmDirector(int id) {
+        return filmDao.getLikesFilmDirector(id);
+    }
+
+    public List<Film> getLikesFilmsString(String title) {
+        return filmDao.getLikesFilmsString(title);
+    }
+
+    public List<Film> getLikesFilmsDirector(String director) {
+        return filmDao.getLikesFilmsDirector(director);
+    }
+
+    public List<Film> getLikesFilmsDirectorName(String directorName) {
+        return filmDao.getLikesFilmsDirectorName(directorName);
+    }
 }
