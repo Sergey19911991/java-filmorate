@@ -8,7 +8,11 @@ import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Component;
 import ru.yandex.practicum.filmorate.exeption.NotFoundException;
 import ru.yandex.practicum.filmorate.exeption.ValidationException;
+import ru.yandex.practicum.filmorate.model.Event;
+import ru.yandex.practicum.filmorate.model.EventOperation;
+import ru.yandex.practicum.filmorate.model.EventType;
 import ru.yandex.practicum.filmorate.model.User;
+import ru.yandex.practicum.filmorate.service.EventService;
 
 import javax.validation.Valid;
 import java.sql.Date;
@@ -22,9 +26,11 @@ import java.util.Collection;
 @Component
 public class UserDao {
     private final JdbcTemplate jdbcTemplate;
+    private final EventService eventService;
 
-    public UserDao(JdbcTemplate jdbcTemplate) {
+    public UserDao(JdbcTemplate jdbcTemplate, EventService eventService) {
         this.jdbcTemplate = jdbcTemplate;
+        this.eventService = eventService;
     }
 
     private User mapRowToUser(ResultSet resultSet, int rowNum) throws SQLException {
@@ -108,6 +114,11 @@ public class UserDao {
             throw new NotFoundException("Такого пользователя не существует");
         }
         log.info("Пользователь {} добавил в друзья пользователя {}", id, friendId);
+
+        Event newEvent = eventService.addEvent(
+                new Event(id, EventType.FRIEND.toString(), EventOperation.ADD.toString(), friendId));
+        log.info("В ленте новое событие - {}", newEvent);
+
         return jdbcTemplate.queryForObject(sqlQuery, this::mapRowToUser, id);
     }
 
@@ -143,6 +154,9 @@ public class UserDao {
 
     public int deleteFriend(int id, int friendId) {
         String sqlQuery = "delete from USERS_FRIENDS  where USERS_ID = ? AND USERS_FRIEND_ID=?";
+        Event newEvent = eventService.addEvent(
+                new Event(id, EventType.FRIEND.toString(), EventOperation.REMOVE.toString(), friendId));
+        log.info("В ленте новое событие - {}", newEvent);
         return jdbcTemplate.update(sqlQuery, id, friendId);
     }
 

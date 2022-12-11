@@ -16,6 +16,7 @@ import java.sql.SQLException;
 import java.util.*;
 
 import org.springframework.jdbc.core.JdbcTemplate;
+import ru.yandex.practicum.filmorate.service.EventService;
 
 
 import javax.validation.Valid;
@@ -25,9 +26,11 @@ import javax.validation.Valid;
 @Component
 public class FilmDao {
     private final JdbcTemplate jdbcTemplate;
+    private final EventService eventService;
 
-    public FilmDao(JdbcTemplate jdbcTemplate) {
+    public FilmDao(JdbcTemplate jdbcTemplate, EventService eventService) {
         this.jdbcTemplate = jdbcTemplate;
+        this.eventService = eventService;
     }
 
     private Film mapRowToFilm(ResultSet rs, int rowNum) throws SQLException {
@@ -199,6 +202,9 @@ public class FilmDao {
             jdbcTemplate.update(sqlQueryFriend,
                     id, userId);
             log.info("Пользователь {}  {}", userId, id);
+            Event newEvent = eventService.addEvent(
+                    new Event(userId, EventType.LIKE.toString(), EventOperation.ADD.toString(), id));
+            log.info("В ленте новое событие - {}", newEvent);
             return jdbcTemplate.queryForObject(sqlQuery, this::mapRowToFilm, id);
         } else {
             throw new NotFoundException("Такого пользователя и/или фильма не существует");
@@ -214,6 +220,9 @@ public class FilmDao {
         if (filmRows.next() && filmRowsUser.next()) {
             String sqlQueryLikes = "delete from FILMS_LIKES  where USERS_ID = ? AND FILMS_ID=?";
             log.info("Пользователь {} удалил лайк у фильма {}", userId, id);
+            Event newEvent = eventService.addEvent(
+                    new Event(userId, EventType.LIKE.toString(), EventOperation.REMOVE.toString(), id));
+            log.info("В ленте новое событие - {}", newEvent);
             return jdbcTemplate.update(sqlQueryLikes, userId, id);
         } else {
             throw new NotFoundException("Такого пользователя и/или фильма не существует");

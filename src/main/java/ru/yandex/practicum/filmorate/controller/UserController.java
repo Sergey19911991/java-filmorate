@@ -9,7 +9,9 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.util.Collection;
 
+import ru.yandex.practicum.filmorate.model.Event;
 import ru.yandex.practicum.filmorate.model.User;
+import ru.yandex.practicum.filmorate.service.EventService;
 import ru.yandex.practicum.filmorate.service.UserDbService;
 
 @RequestMapping("/users")
@@ -18,12 +20,13 @@ import ru.yandex.practicum.filmorate.service.UserDbService;
 public class UserController {
 
     private final UserDbService userDbService;
-
+    private final EventService eventService;
 
 
     @Autowired
-    public UserController(UserDbService userDbService) {
+    public UserController(UserDbService userDbService, EventService eventService) {
         this.userDbService = userDbService;
+        this.eventService = eventService;
     }
 
     @PostMapping(value = "")
@@ -68,5 +71,9 @@ public class UserController {
         return userDbService.getCommonFriends(id, otherId);
     }
 
+    @GetMapping("/{id}/feed")
+    public Collection<Event> getFeedByUserId(@PathVariable int id) {
+        return eventService.getEventByUserId(id);
+    }
 }
 
