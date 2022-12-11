@@ -37,7 +37,7 @@ public class EventDBStorage implements EventStorage {
                 .withTableName("EVENTS")
                 .usingGeneratedKeyColumns("EVENT_ID");
         int eventId = simpleJdbcInsert.executeAndReturnKey(event.toMap()).intValue();
-        event.setId(eventId);
+        event.setEventId(eventId);
         return event;
     }
 

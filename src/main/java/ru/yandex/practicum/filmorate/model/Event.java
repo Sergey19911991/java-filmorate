@@ -1,5 +1,6 @@
 package ru.yandex.practicum.filmorate.model;
 
+import com.fasterxml.jackson.annotation.JsonGetter;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -12,7 +13,7 @@ import java.util.Map;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Event {
-    private int id;
+    private int eventId;
     private int userId;
     private int entityId;
     private String eventType;
@@ -25,6 +26,9 @@ public class Event {
         this.operation = operation;
         this.entityId = entityId;
     }
+
+    @JsonGetter("timestamp")
+    public long timestampToEpochMillis() { return timestamp.toEpochMilli();}
 
     public Map<String, Object> toMap() {
         Map<String, Object> mapEvent = new HashMap<>();
