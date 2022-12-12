@@ -71,9 +71,18 @@ public class UserController {
         return userDbService.getCommonFriends(id, otherId);
     }
 
+
     @GetMapping("/{id}/feed")
     public Collection<Event> getFeedByUserId(@PathVariable int id) {
         return eventService.getEventByUserId(id);
     }
+
+
+    @DeleteMapping("/{userId}")
+    public void deleteUserById(@PathVariable int userId) {
+        userDbService.deleteUserById(userId);
+    }
+
+
 }
 
