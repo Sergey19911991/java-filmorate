@@ -264,7 +264,7 @@ public class FilmDao {
         }
     }
 
-    //Сергей 10.12
+
     private LinkedHashSet<Genre> getGenreSet(int id) {
         String sqlQuery = "select gm.GENRE_ID,gm.GENRE_NAME from GENRE_NAME AS gm LEFT JOIN FILMS_GENRE AS fg ON fg.GENRE_ID=gm.GENRE_ID where fg.FILMS_ID = ?";
         List<Genre> list = new ArrayList<Genre>(jdbcTemplate.query(sqlQuery, this::mapRowToGenre, id));
@@ -435,6 +435,15 @@ public class FilmDao {
                 "WHERE lower(dr.DIRECTORS_NAME) LIKE lower('%' || ? || '%') OR lower(f.FILMS_NAME) LIKE lower('%' || ? || '%')  GROUP BY f.FILMS_ID ORDER BY COUNT (fl.FILMS_ID) DESC";
         log.info("Список фильмов по популярности, в имени режиссера которых содежиться {}", directorName);
         return jdbcTemplate.query(sqlQueryLikes, this::mapRowToFilm, directorName,directorName);
+    }
+
+    public List<Film> getCommonFilm (int userId, int friendId){
+        String sqlQuery ="SELECT DISTINCT f.RATING_ID,f.FILMS_DESCRIPTION,f.FILMS_DURATION,f.FILMS_NAME,f.FILMS_RELEASE_DATE,fl.FILMS_ID FROM " +
+                 "(SELECT DISTINCT ff.FILMS_ID,ff.RATING_ID,ff.FILMS_DESCRIPTION,ff.FILMS_DURATION,ff.FILMS_NAME,ff.FILMS_RELEASE_DATE FROM FILMS AS ff LEFT JOIN FILMS_LIKES AS fl ON ff.FILMS_ID = fl.FILMS_ID WHERE fl.USERS_ID = ? )"  +
+                " AS f "+
+       " LEFT JOIN FILMS_LIKES AS fl ON f.FILMS_ID = fl.FILMS_ID "+
+       " WHERE fl.USERS_ID = ? GROUP BY f.FILMS_ID ORDER BY COUNT (fl.FILMS_ID) DESC";
+      return jdbcTemplate.query(sqlQuery, this::mapRowToFilm, userId, friendId);
     }
 
 

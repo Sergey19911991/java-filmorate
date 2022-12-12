@@ -120,6 +120,9 @@ public class FilmDbStorage implements FilmStorage {
         return filmDao.getLikesFilmsDirectorName(directorName);
     }
 
+
+    public List<Film> getCommonFilm (int userId, int friendId){
+        return filmDao.getCommonFilm(userId,friendId);
     @Override
     public void deleteFilmById(int filmId) {
         deleteFilmsGenre(filmId);
@@ -161,5 +164,6 @@ public class FilmDbStorage implements FilmStorage {
     private void deleteOnlyFilm(int filmId) {
         String sql = "DELETE FROM FILMS WHERE  FILMS_ID = ? ";
         jdbcTemplate.update(sql, filmId);
+
     }
 }

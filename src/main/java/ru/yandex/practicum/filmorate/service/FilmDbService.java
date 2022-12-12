@@ -76,10 +76,15 @@ public class FilmDbService {
         return filmDbStorage.getLikesFilmsDirectorName(directorName);
     }
 
+
+    public List<Film> getCommonFilm (int userId, int friendId){
+        return filmDbStorage.getCommonFilm(userId,friendId);
+
     public void deleteFilmById(int filmId) {
         //проверим, что такое фильм есть...
         Film film = getFilm(filmId);
         filmDbStorage.deleteFilmById(filmId);
+
     }
 
 }

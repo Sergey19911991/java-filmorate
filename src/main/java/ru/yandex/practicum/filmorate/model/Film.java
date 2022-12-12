@@ -6,6 +6,7 @@ import lombok.Data;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 import java.time.LocalDate;
+
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -22,7 +23,6 @@ public class Film implements Comparable<Film> {
     @Positive
     private double duration;
     private Set<Integer> likes;
-    //private Set<Genre> genres;
     private LinkedHashSet<Genre> genres = new LinkedHashSet<>();
     @NotNull
     private Mpa mpa;
