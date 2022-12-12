@@ -87,4 +87,9 @@ public class InMemoryUserStorage implements UserStorage {
         }
     }
 
+    @Override
+    public  void deleteUserById(int userId) {
+        log.info("Сервис удаления пользователя по его Id не реалищзован для InMemoryUserStorage");
+    }
+
 }
