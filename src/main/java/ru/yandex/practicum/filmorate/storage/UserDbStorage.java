@@ -7,7 +7,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import ru.yandex.practicum.filmorate.dao.UserDao;
 import ru.yandex.practicum.filmorate.model.User;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.Collection;
+import java.util.List;
 
 
 @Primary
@@ -66,6 +69,15 @@ public class UserDbStorage implements UserStorage {
         deleteAllUsersReviews(userId);
         deleteAllFriendsFromUser(userId);
         deleteOnlyUser(userId);
+    }
+
+    public List<Integer> getUserFavoriteFilmsIds(int id) {
+        String sqlQuery = "SELECT FILMS_ID FROM FILMS_LIKES WHERE USERS_ID = ?";
+        return jdbcTemplate.query(sqlQuery, this::mapRowToInteger, id);
+    }
+
+    private Integer mapRowToInteger(ResultSet rs, int rowNum) throws SQLException {
+        return rs.getInt("FILMS_ID");
     }
 
     private void deleteOnlyUser(int userId) {
