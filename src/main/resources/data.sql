@@ -1,4 +1,5 @@
 
+-- ЛУЧШЕ БЫ ИСПОЛЬЗОВАТЬ UPSERT
 INSERT INTO GENRE_NAME(GENRE_NAME)
 values(     'Комедия');
 INSERT INTO GENRE_NAME(GENRE_NAME)

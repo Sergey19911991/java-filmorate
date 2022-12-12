@@ -1,29 +1,35 @@
 package ru.yandex.practicum.filmorate.model;
 
+import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Data;
+import lombok.experimental.FieldDefaults;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 import java.time.LocalDate;
+
+import java.util.LinkedHashSet;
 import java.util.Set;
-import java.util.TreeSet;
+
 @Builder
 @Data
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class Film implements Comparable<Film> {
-    private int id;
+    int id;
     @NotNull
-    private String name;
+    String name;
     @NotNull
-    private String description;
+    String description;
     @NotNull
-    private LocalDate releaseDate;
+    LocalDate releaseDate;
     @Positive
-    private double duration;
-    private Set<Integer> likes = new TreeSet<>();
-    private Set<Genre> genres;
+    double duration;
+    Set<Integer> likes;
+    LinkedHashSet<Genre> genres = new LinkedHashSet<>();
     @NotNull
-    private Mpa mpa;
+    Mpa mpa;
+    Set<Director> directors;
 
 
     @Override
