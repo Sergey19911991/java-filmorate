@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.storage.UserDbStorage;
-import ru.yandex.practicum.filmorate.storage.UserStorage;
+
 import java.util.Collection;
 
 @Service
@@ -18,7 +18,6 @@ public class UserDbService {
     }
 
 
-
     public User create(User user) {
         return userDbStorage.create(user);
     }
@@ -28,6 +27,11 @@ public class UserDbService {
         return userDbStorage.updateUser(user);
     }
 
+    public void deleteUserById(int userId) {
+        //проверим, что такой юзер есть...
+        User user = getUser(userId);
+        userDbStorage.deleteUserById(userId);
+    }
 
     public Collection<User> findAll() {
         return userDbStorage.findAll();
@@ -38,8 +42,8 @@ public class UserDbService {
         return userDbStorage.getUser(id);
     }
 
-    public User putFriends(int id, int friendId){
-        return userDbStorage.putFriends(id,friendId);
+    public User putFriends(int id, int friendId) {
+        return userDbStorage.putFriends(id, friendId);
     }
 
     public Collection<User> getFriends(int id) {
@@ -47,7 +51,7 @@ public class UserDbService {
     }
 
     public Collection<User> getCommonFriends(int id, int otherId) {
-        return userDbStorage.getCommonFriends(id,otherId);
+        return userDbStorage.getCommonFriends(id, otherId);
     }
 
     public int deletFriends(@PathVariable int id, @PathVariable int friendId) {

@@ -3,8 +3,6 @@ package ru.yandex.practicum.filmorate.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.yandex.practicum.filmorate.model.Film;
-import ru.yandex.practicum.filmorate.model.Genre;
-import ru.yandex.practicum.filmorate.model.Mpa;
 import ru.yandex.practicum.filmorate.storage.FilmDbStorage;
 
 import javax.validation.Valid;
@@ -56,6 +54,7 @@ public class FilmDbService {
     public List<Film> getMostPopularByYearAndGenre(Integer count, Integer genreId, Integer year) {
         return filmDbStorage.getMostPopularByYearAndGenre(count, genreId, year);
     }
+
     public List<Film> getYearFilm(int id) {
         return filmDbStorage.getYearFilm(id);
     }
@@ -75,6 +74,12 @@ public class FilmDbService {
 
     public List<Film> getLikesFilmsDirectorName(String directorName) {
         return filmDbStorage.getLikesFilmsDirectorName(directorName);
+    }
+
+    public void deleteFilmById(int filmId) {
+        //проверим, что такое фильм есть...
+        Film film = getFilm(filmId);
+        filmDbStorage.deleteFilmById(filmId);
     }
 
 }

@@ -1,6 +1,7 @@
 package ru.yandex.practicum.filmorate.storage;
 
 import org.springframework.context.annotation.Primary;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.PathVariable;
 import ru.yandex.practicum.filmorate.dao.UserDao;
@@ -11,12 +12,15 @@ import java.util.Collection;
 
 @Primary
 @Component
-public class UserDbStorage implements UserStorage{
+public class UserDbStorage implements UserStorage {
 
     private UserDao userDao;
 
-    public UserDbStorage (UserDao userDao){
-        this.userDao=userDao;
+    private final JdbcTemplate jdbcTemplate;
+
+    public UserDbStorage(UserDao userDao, JdbcTemplate jdbcTemplate) {
+        this.userDao = userDao;
+        this.jdbcTemplate = jdbcTemplate;
     }
 
     @Override
@@ -39,8 +43,8 @@ public class UserDbStorage implements UserStorage{
         return userDao.findUserById(id);
     }
 
-    public User putFriends(int id, int friendId){
-        return userDao.putFriends(id,friendId);
+    public User putFriends(int id, int friendId) {
+        return userDao.putFriends(id, friendId);
     }
 
     public Collection<User> getFriends(int id) {
@@ -48,11 +52,39 @@ public class UserDbStorage implements UserStorage{
     }
 
     public Collection<User> getCommonFriends(int id, int otherId) {
-        return userDao.getCommonFriends(id,otherId);
+        return userDao.getCommonFriends(id, otherId);
     }
 
     public int deletFriends(@PathVariable int id, @PathVariable int friendId) {
         return userDao.deleteFriend(id, friendId);
+    }
+
+    @Override
+    public void deleteUserById(int userId) {
+        deleteAllUsersReviewLikes(userId);
+        deleteAllUsersReviews(userId);
+        deleteAllFriendsFromUser(userId);
+        deleteOnlyUser(userId);
+    }
+
+    private void deleteOnlyUser(int userId) {
+        String sql = "DELETE FROM USERS WHERE USERS_ID = ?";
+        jdbcTemplate.update(sql, userId);
+    }
+
+    private void deleteAllFriendsFromUser(int userId) {
+        String sql = "DELETE FROM USERS_FRIENDS WHERE USERS_ID = ? OR USERS_FRIEND_ID = ?";
+        jdbcTemplate.update(sql, userId, userId);
+    }
+
+    private void deleteAllUsersReviewLikes(int userId) {
+        String sql = "DELETE FROM REVIEWSBYlIKES WHERE USER_ID = ?";
+        jdbcTemplate.update(sql, userId);
+    }
+
+    private void deleteAllUsersReviews(int userId) {
+        String sql = "DELETE FROM REVIEWS WHERE USER_ID = ?";
+        jdbcTemplate.update(sql, userId);
     }
 
 }

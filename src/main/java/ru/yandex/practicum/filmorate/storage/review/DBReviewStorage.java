@@ -65,7 +65,6 @@ public class DBReviewStorage implements ReviewStorage {
 
     @Override
     public void deleteLike(int reviewId, int userId, boolean isLike) {
-        //TODO: нужно проверить, что такой like действительно есть, иначе зря изменим
         String sql = "DELETE FROM REVIEWSBYLIKES WHERE REVIEW_ID = ? AND IS_LIKE = ? AND USER_ID = ?";
         jdbcTemplate.update(sql, reviewId, isLike, userId);
         updateUseful(reviewId, isLike, true);

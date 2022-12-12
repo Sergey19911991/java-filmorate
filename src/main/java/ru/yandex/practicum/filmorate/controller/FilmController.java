@@ -1,17 +1,15 @@
 package ru.yandex.practicum.filmorate.controller;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import lombok.extern.slf4j.Slf4j;
+import ru.yandex.practicum.filmorate.model.Film;
+import ru.yandex.practicum.filmorate.service.FilmDbService;
 
 import javax.validation.Valid;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-
-import ru.yandex.practicum.filmorate.model.Film;
-import ru.yandex.practicum.filmorate.service.FilmDbService;
 
 @Slf4j
 @RestController
@@ -66,13 +64,14 @@ public class FilmController {
             return filmDbService.getLikesFilms(count);
         }
     }
+
     @GetMapping("/films/director/{directorId}")
-    public List<Film> getYearFilm(@PathVariable int directorId,@RequestParam String sortBy) {
+    public List<Film> getYearFilm(@PathVariable int directorId, @RequestParam String sortBy) {
         List<Film> list = new ArrayList<>();
-        if(sortBy.equals("year")) {
+        if (sortBy.equals("year")) {
             list.addAll(filmDbService.getYearFilm(directorId));
         }
-        if(sortBy.equals("likes")) {
+        if (sortBy.equals("likes")) {
             list.addAll(filmDbService.getLikesFilmDirector(directorId));
         }
         return list;
@@ -80,18 +79,23 @@ public class FilmController {
 
 
     @GetMapping("/films/search")
-     public List<Film> getSearch(@RequestParam String query,@RequestParam String by){
+    public List<Film> getSearch(@RequestParam String query, @RequestParam String by) {
         List<Film> list = new ArrayList<>();
-        if(by.equals("title")) {
+        if (by.equals("title")) {
             list.addAll(filmDbService.getLikesFilmsString(query));
         }
-        if(by.equals("director")) {
+        if (by.equals("director")) {
             list.addAll(filmDbService.getLikesFilmsDirector(query));
         }
-        if (by.equals("title,director")||by.equals("director,title")){
+        if (by.equals("title,director") || by.equals("director,title")) {
             list.addAll(filmDbService.getLikesFilmsDirectorName(query));
         }
         return list;
+    }
+
+    @DeleteMapping("/films/{filmId}")
+    public void deleteFilmById(@PathVariable int filmId) {
+        filmDbService.deleteFilmById(filmId);
     }
 
 }

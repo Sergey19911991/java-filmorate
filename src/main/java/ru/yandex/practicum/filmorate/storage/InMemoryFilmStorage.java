@@ -61,4 +61,9 @@ public class InMemoryFilmStorage implements FilmStorage {
         return films.get(id);
     }
 
+    @Override
+    public void deleteFilmById(int filmId) {
+        log.info("Удаление фильма по его Id для InMemoryFilmStorage не реализовано!");
+    }
+
 }
