@@ -77,9 +77,9 @@ public class FilmDbService {
     }
 
 
-    public List<Film> getCommonFilm (int userId, int friendId){
-        return filmDbStorage.getCommonFilm(userId,friendId);
-
+    public List<Film> getCommonFilm (int userId, int friendId) {
+        return filmDbStorage.getCommonFilm(userId, friendId);
+    }
     public void deleteFilmById(int filmId) {
         //проверим, что такое фильм есть...
         Film film = getFilm(filmId);

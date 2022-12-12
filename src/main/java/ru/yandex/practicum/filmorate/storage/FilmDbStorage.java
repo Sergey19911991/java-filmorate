@@ -121,8 +121,9 @@ public class FilmDbStorage implements FilmStorage {
     }
 
 
-    public List<Film> getCommonFilm (int userId, int friendId){
-        return filmDao.getCommonFilm(userId,friendId);
+    public List<Film> getCommonFilm (int userId, int friendId) {
+        return filmDao.getCommonFilm(userId, friendId);
+    }
     @Override
     public void deleteFilmById(int filmId) {
         deleteFilmsGenre(filmId);
