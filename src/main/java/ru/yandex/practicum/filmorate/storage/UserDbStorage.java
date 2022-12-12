@@ -61,6 +61,7 @@ public class UserDbStorage implements UserStorage {
 
     @Override
     public void deleteUserById(int userId) {
+        deleteEventsUser(userId);
         deleteAllUsersReviewLikes(userId);
         deleteAllUsersReviews(userId);
         deleteAllFriendsFromUser(userId);
@@ -84,6 +85,11 @@ public class UserDbStorage implements UserStorage {
 
     private void deleteAllUsersReviews(int userId) {
         String sql = "DELETE FROM REVIEWS WHERE USER_ID = ?";
+        jdbcTemplate.update(sql, userId);
+    }
+
+    private void deleteEventsUser(int userId){
+        String sql = "DELETE FROM EVENTS WHERE USERS_ID = ?";
         jdbcTemplate.update(sql, userId);
     }
 
