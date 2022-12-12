@@ -1,22 +1,25 @@
 package ru.yandex.practicum.filmorate.model;
 
+import lombok.AccessLevel;
 import lombok.Data;
+import lombok.experimental.FieldDefaults;
 
 import javax.validation.constraints.NotNull;
 import java.util.LinkedHashSet;
 
 @Data
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class Review {
-    private int reviewId;
+    int reviewId;
     @NotNull
-    private String content;
+    String content;
     @NotNull
-    private Boolean isPositive;
+    Boolean isPositive;
     @NotNull
-    private Integer userId;
+    Integer userId;
     @NotNull
-    private Integer filmId;
-    private int useful;
+    Integer filmId;
+    int useful;
     private LinkedHashSet<ReviewLike> reviewLikes = new LinkedHashSet<>();
 
     public void addLike(ReviewLike like) {

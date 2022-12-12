@@ -1,9 +1,11 @@
 package ru.yandex.practicum.filmorate.model;
 
 import com.fasterxml.jackson.annotation.JsonGetter;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.experimental.FieldDefaults;
 
 import java.time.Instant;
 import java.util.HashMap;
@@ -12,13 +14,14 @@ import java.util.Map;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class Event {
-    private int eventId;
-    private int userId;
-    private int entityId;
-    private String eventType;
-    private String operation;
-    private Instant timestamp = Instant.now();
+    int eventId;
+    int userId;
+    int entityId;
+    String eventType;
+    String operation;
+    Instant timestamp = Instant.now();
 
     public Event(int userId, String eventType, String operation, int entityId) {
         this.userId = userId;
