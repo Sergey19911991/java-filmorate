@@ -1,3 +1,4 @@
-# java-filmorate
-Template repository for Filmorate project.
-![](https://github.com/Sergey19911991/java-filmorate/blob/add-database/Untitled.png)
+![](https://github.com/Sergey19911991/java-filmorate/blob/add-database/Untitled.png)  
+ Приложение для поиска и сортировки фильмов.
+Для объектов "Пользователь" и "Фильм" возможно создание, удаление, редактирование, вывод информации. Имеется ограниченный набор объектов "Жанр фильма" и "Категория фильма"
+Стек технологий: H2, Spring.
